@@ -32,7 +32,7 @@ public class PullService {
     private XmlSerializer serializer;
 
     /**
-     *   写入xml文件
+     * 写入xml文件
      */
     public void writeXML(Properties properties, Context context) {
 
@@ -53,27 +53,27 @@ public class PullService {
             setFileTitle();
 
             //server_url
-            setContent("server_url",properties.getServer_url());
+            setContent("server_url", properties.getServer_url());
 
             //application_root
-            setContent("application_root",properties.getApplication_root());
+            setContent("application_root", properties.getApplication_root());
 
             //usb_root
-            setContent("usb_root",properties.getUsb_root());
+            setContent("usb_root", properties.getUsb_root());
 
             //interval_get_schedule
-            setContent("interval_get_schedule",properties.getGet_schedule());
+            setContent("interval_get_schedule", properties.getGet_schedule());
 
             //interval_notify_status
-            setContent("interval_notify_status",properties.getNotify_status());
+            setContent("interval_notify_status", properties.getNotify_status());
 
             //margin_next_schedule_download
-            setContent("margin_next_schedule_download",properties.getSchedule_download());
+            setContent("margin_next_schedule_download", properties.getSchedule_download());
 
             serializer.endTag(null, "properties");
             serializer.endDocument();
             fos.close();
-            Toast.makeText(context,"保存文件成功",Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "保存文件成功", Toast.LENGTH_LONG).show();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -85,6 +85,7 @@ public class PullService {
 
     /**
      * 设置文件头
+     *
      * @throws IOException
      */
     private void setFileTitle() throws IOException {
@@ -98,8 +99,9 @@ public class PullService {
 
     /**
      * 设置节点的公共方法
-     * @param attribute  属性名称
-     * @param text       属性内容
+     *
+     * @param attribute 属性名称
+     * @param text      属性内容
      * @throws IOException
      */
 
@@ -112,6 +114,7 @@ public class PullService {
 
     /**
      * 读取xml文件
+     *
      * @param xmlfile 文件输入流
      * @return 集合对象
      */
@@ -124,42 +127,41 @@ public class PullService {
             //获取根节点
             Element root = document.getDocumentElement();
             NodeList node = root.getElementsByTagName("entry");
-            for (int i = 0; i < node.getLength(); i++) {
-                if (null == node.item(0).getFirstChild()) {
-                    properties.setServer_url("");
-                } else {
-                    properties.setServer_url(node.item(0).getFirstChild().getNodeValue());
-                }
 
-                if (null == node.item(1).getFirstChild()) {
-                    properties.setApplication_root("");
-                } else {
-                    properties.setApplication_root(node.item(1).getFirstChild().getNodeValue());
-                }
+            if (null == node.item(0).getFirstChild()) {
+                properties.setServer_url("");
+            } else {
+                properties.setServer_url(node.item(0).getFirstChild().getNodeValue());
+            }
 
-                if (null == node.item(2).getFirstChild()) {
-                    properties.setUsb_root("");
-                } else {
-                    properties.setUsb_root(node.item(2).getFirstChild().getNodeValue());
-                }
+            if (null == node.item(1).getFirstChild()) {
+                properties.setApplication_root("");
+            } else {
+                properties.setApplication_root(node.item(1).getFirstChild().getNodeValue());
+            }
 
-                if (null == node.item(3).getFirstChild()) {
-                    properties.setGet_schedule("");
-                } else {
-                    properties.setGet_schedule(node.item(3).getFirstChild().getNodeValue());
-                }
+            if (null == node.item(2).getFirstChild()) {
+                properties.setUsb_root("");
+            } else {
+                properties.setUsb_root(node.item(2).getFirstChild().getNodeValue());
+            }
 
-                if (null == node.item(4).getFirstChild()) {
-                    properties.setNotify_status("");
-                } else {
-                    properties.setNotify_status(node.item(4).getFirstChild().getNodeValue());
-                }
+            if (null == node.item(3).getFirstChild()) {
+                properties.setGet_schedule("");
+            } else {
+                properties.setGet_schedule(node.item(3).getFirstChild().getNodeValue());
+            }
 
-                if (null == node.item(5).getFirstChild()) {
-                    properties.setSchedule_download("");
-                } else {
-                    properties.setSchedule_download(node.item(5).getFirstChild().getNodeValue());
-                }
+            if (null == node.item(4).getFirstChild()) {
+                properties.setNotify_status("");
+            } else {
+                properties.setNotify_status(node.item(4).getFirstChild().getNodeValue());
+            }
+
+            if (null == node.item(5).getFirstChild()) {
+                properties.setSchedule_download("");
+            } else {
+                properties.setSchedule_download(node.item(5).getFirstChild().getNodeValue());
             }
 
         } catch (FileNotFoundException e) {
@@ -173,9 +175,6 @@ public class PullService {
         }
         return properties;
     }
-
-
-
 
 
 }

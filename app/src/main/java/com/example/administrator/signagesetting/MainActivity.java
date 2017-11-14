@@ -10,14 +10,17 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.example.administrator.signagesetting.XmlUtil.PullService;
 import com.example.administrator.signagesetting.bean.Properties;
 import java.io.File;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
         //检查权限
@@ -62,7 +66,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //获取文件夹路径
         File dirFile = new File(Environment.getExternalStorageDirectory().toString() + "/signage");
+        if (!dirFile.exists() && !dirFile.isDirectory()) {
+            dirFile.mkdir();
+        }
         File xmlFile = new File(dirFile.getPath() + "/" + fileName);
+        if (!xmlFile.exists()) {
+            try {
+                xmlFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         //获取xml中数据
         properties = pullService.getProperties(xmlFile);
         //把数据设置到输入框中
@@ -135,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     btn_apply.requestFocus();
                     btn_apply.requestFocusFromTouch();
                     apply();
-
                 }
                 break;
         }
@@ -170,12 +183,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            if (properties.getServer_url().equals(edit_serverURL.getText().toString() )&&
-                    properties.getApplication_root().equals(edit_AppRootPath.getText().toString())&&
-                    properties.getGet_schedule().equals(edit_IntervalToGetSchedule.getText().toString())&&
-                    properties.getNotify_status().equals(edit_InterToNotifyStatus.getText().toString())&&
-                    properties.getSchedule_download().equals(edit_ScheduleDownload.getText().toString())&&
-                    properties.getUsb_root().equals(edit_USBRootPath.getText().toString())
+
+
+
+
+
+
+            if (TextUtils.equals(properties.getServer_url(),edit_serverURL.getText().toString()) &&
+                    TextUtils.equals(properties.getApplication_root(),edit_AppRootPath.getText().toString())&&
+                    TextUtils.equals(properties.getGet_schedule(),edit_IntervalToGetSchedule.getText().toString())&&
+                    TextUtils.equals(properties.getNotify_status(),edit_InterToNotifyStatus.getText().toString())&&
+                    TextUtils.equals(properties.getSchedule_download(),edit_ScheduleDownload.getText().toString())&&
+                    TextUtils.equals(properties.getUsb_root(),edit_USBRootPath.getText().toString())
             ){
                 btn_apply.setBackgroundColor(Color.parseColor("#333333d6"));
                     btn_apply.setEnabled(false);
@@ -205,4 +224,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+
+
 }
